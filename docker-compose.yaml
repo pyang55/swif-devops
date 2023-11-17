@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      dockerfile: ./jwt-auth-service/Dockerfile
+    networks:
+      - app-network
+
+  json-server:
+    command: http://jsonplaceholder.typicode.com/db -H 0.0.0.0
+    networks:
+      - app-network
+    build:
+      dockerfile: ./jsonserver.Dockerfile    
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./nginx/rate_limiting.lua:/usr/local/openresty/nginx/lua/rate_limiting.lua
+    ports:
+      - "80:80"
+    depends_on:
+      - json-server    
+      - auth-service
+    networks:
+      - app-network
+    build:
+      dockerfile: ./nginx/Dockerfile      
+
+networks:
+  app-network:
