@@ -127,3 +127,4 @@ There are a few assumptions made in the making of this project and there are a f
 - In production nginx confs would be handled by consul template so that everything would be dynamic for different routes
 - I would not hard code the auth token, but for the sake of this exercise, no need to implement a secrets manager
 - I might use traefik instead of nginx, more robust.
+- I also chose to reject the calls instead of throttle to the rate I set. We can do that easily in rate_limiting.lua with an extra delay. But in order to show that we are rate limiting at different rates, this was easiest way to show
